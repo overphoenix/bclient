@@ -1,38 +1,43 @@
 {
-  "name": "bclient",
-  "version": "0.1.7",
+  "name": "@recalibratedsystems/bclient",
+  "version": "0.1.8",
   "description": "Bcoin node and wallet client",
-  "keywords": [
-    "http",
-    "request",
-    "socket.io",
-    "websockets"
-  ],
   "license": "MIT",
-  "repository": "git://github.com/bcoin-org/bclient.git",
-  "homepage": "https://github.com/bcoin-org/bclient",
+  "repository": "git://github.com/overphoenix/bclient.git",
+  "homepage": "https://github.com/overphoenix/bclient",
   "bugs": {
-    "url": "https://github.com/bcoin-org/bclient/issues"
+    "url": "https://github.com/overphoenix/bclient/issues"
   },
-  "author": "Christopher Jeffrey <chjjeffrey@gmail.com>",
-  "main": "./lib/bclient.js",
+  "author": "Overphoenix",
+  "main": "./lib/index.js",
   "scripts": {
-    "lint": "eslint lib/ || exit 0",
-    "test": "bmocha --reporter spec test/*-test.js"
-  },
-  "bin": {
-    "bcoin-cli": "./bin/bcoin-cli",
-    "bwallet-cli": "./bin/bwallet-cli"
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "build": "tsc -p tsconfig.json",
+    "test": "jest",
+    "check-deps": "npx npm-check-updates --deep",
+    "update-deps": "npx npm-check-updates --deep -u"
   },
   "dependencies": {
-    "bcfg": "~0.1.6",
-    "bcurl": "~0.1.6",
+    "bcfg": "~0.2.1",
+    "bcurl": "~0.2.0",
     "bsert": "~0.0.10"
   },
-  "devDependencies": {
-    "bmocha": "^2.1.0"
-  },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@swc/jest": "^0.2.26",
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.41.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.5.0",
+    "prettier": "^2.8.8",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
   }
 }
