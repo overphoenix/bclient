@@ -27,8 +27,8 @@ export default class Amount {
     static fromMBTC(value: any): Amount;
     static fromBTC(value: any): Amount;
     static from(unit: any, value: any): Amount;
-    static btc(value: any, num: any): string | number;
+    static btc(value: number | string, num: boolean): string | number;
     static value(str: any): number;
-    static encode(value: any, exp: any, num?: number): string | number;
-    static decode(value: any, exp: any): number;
+    static encode(value: number, exp: number, num?: boolean): string | number;
+    static decode(value: string | number, exp: number): number;
 }

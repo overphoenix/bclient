@@ -310,7 +310,7 @@ export default class Amount {
    * @returns {String} BTC string.
    */
 
-  static btc(value: any, num: any) {
+  static btc(value: number | string, num: boolean) {
     if (typeof value === "string") return value;
 
     return Amount.encode(value, 8, num);
@@ -337,7 +337,7 @@ export default class Amount {
    * @returns {String|Number}
    */
 
-  static encode(value: any, exp: any, num?: number) {
+  static encode(value: number, exp: number, num?: boolean) {
     if (num) return fixed.toFloat(value, exp);
     return fixed.encode(value, exp);
   }
@@ -350,7 +350,7 @@ export default class Amount {
    * @throws on parse error
    */
 
-  static decode(value: any, exp: any) {
+  static decode(value: string | number, exp: number) {
     if (typeof value === "number") return fixed.fromFloat(value, exp);
     return fixed.decode(value, exp);
   }
