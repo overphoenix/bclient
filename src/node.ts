@@ -4,9 +4,14 @@ import { Options } from "./types";
 
 /**
  * Node Client
+ * @alias module:client.NodeClient
  * @extends {bcurl.Client}
  */
-export default class NodeClient extends bcurl.Client {
+export class NodeClient extends bcurl.Client {
+  /**
+   * Creat a node client.
+   * @param {Object?} options
+   */
   constructor(options: Options) {
     super(options);
   }
@@ -25,7 +30,6 @@ export default class NodeClient extends bcurl.Client {
    * Make an RPC call.
    * @returns {Promise}
    */
-
   execute(name: string, params: any) {
     return super.execute("/", name, params);
   }
@@ -34,7 +38,6 @@ export default class NodeClient extends bcurl.Client {
    * Get a mempool snapshot.
    * @returns {Promise}
    */
-
   getMempool() {
     return super.get("/mempool");
   }
@@ -43,7 +46,6 @@ export default class NodeClient extends bcurl.Client {
    * Get some info about the server (network and version).
    * @returns {Promise}
    */
-
   getInfo() {
     return super.get("/");
   }
@@ -54,7 +56,6 @@ export default class NodeClient extends bcurl.Client {
    * @param {String} address
    * @returns {Promise}
    */
-
   getCoinsByAddress(address: string) {
     assert(typeof address === "string");
     return super.get(`/coin/address/${address}`);
@@ -66,8 +67,7 @@ export default class NodeClient extends bcurl.Client {
    * @param {String[]} addresses
    * @returns {Promise}
    */
-
-  getCoinsByAddresses(addresses: Array<any>) {
+  getCoinsByAddresses(addresses: Array<string>) {
     assert(Array.isArray(addresses));
     return super.post("/coin/address", { addresses });
   }
@@ -79,7 +79,6 @@ export default class NodeClient extends bcurl.Client {
    * @param {Number} index
    * @returns {Promise}
    */
-
   getCoin(hash: string, index: number) {
     assert(typeof hash === "string");
     assert(index >>> 0 === index);
@@ -92,7 +91,6 @@ export default class NodeClient extends bcurl.Client {
    * @param {String} address
    * @returns {Promise}
    */
-
   getTXByAddress(address: string) {
     assert(typeof address === "string");
     return super.get(`/tx/address/${address}`);
@@ -104,8 +102,7 @@ export default class NodeClient extends bcurl.Client {
    * @param {String[]} addresses
    * @returns {Promise}
    */
-
-  getTXByAddresses(addresses: Array<any>) {
+  getTXByAddresses(addresses: Array<string>) {
     assert(Array.isArray(addresses));
     return super.post("/tx/address", { addresses });
   }
@@ -115,7 +112,6 @@ export default class NodeClient extends bcurl.Client {
    * @param {Hash} hash
    * @returns {Promise}
    */
-
   getTX(hash: string) {
     assert(typeof hash === "string");
     return super.get(`/tx/${hash}`);
@@ -126,10 +122,29 @@ export default class NodeClient extends bcurl.Client {
    * @param {Hash|Number} block
    * @returns {Promise}
    */
-
   getBlock(block: string | number) {
     assert(typeof block === "string" || typeof block === "number");
     return super.get(`/block/${block}`);
+  }
+
+  /**
+   * Retrieve a block header.
+   * @param {Hash|Number} block
+   * @returns {Promise}
+   */
+  getBlockHeader(block: string | number) {
+    assert(typeof block === "string" || typeof block === "number");
+    return super.get(`/header/${block}`);
+  }
+
+  /**
+   * Retreive a filter from the filter indexer.
+   * @param {Hash|Number} filter
+   * @returns {Promise}
+   */
+  getFilter(filter: string | number) {
+    assert(typeof filter === "string" || typeof filter === "number");
+    return super.get(`/filter/${filter}`);
   }
 
   /**
@@ -137,8 +152,7 @@ export default class NodeClient extends bcurl.Client {
    * @param {TX} tx
    * @returns {Promise}
    */
-
-  broadcast(tx: string) {
+  broadcast(tx: any) {
     assert(typeof tx === "string");
     return super.post("/broadcast", { tx });
   }
@@ -148,7 +162,6 @@ export default class NodeClient extends bcurl.Client {
    * @param {Number} height
    * @returns {Promise}
    */
-
   reset(height: number) {
     return super.post("/reset", { height });
   }
@@ -158,7 +171,6 @@ export default class NodeClient extends bcurl.Client {
    * @private
    * @returns {Promise}
    */
-
   watchChain() {
     return super.call("watch chain");
   }
@@ -168,7 +180,6 @@ export default class NodeClient extends bcurl.Client {
    * @private
    * @returns {Promise}
    */
-
   watchMempool() {
     return super.call("watch mempool");
   }
@@ -177,17 +188,15 @@ export default class NodeClient extends bcurl.Client {
    * Get chain tip.
    * @returns {Promise}
    */
-
   getTip() {
     return super.call("get tip");
   }
 
   /**
    * Get chain entry.
-   * @param {Hash} hash
+   * @param {Hash} block
    * @returns {Promise}
    */
-
   getEntry(block: any) {
     return super.call("get entry", block);
   }
@@ -198,8 +207,7 @@ export default class NodeClient extends bcurl.Client {
    * @param {Number} [end=-1]
    * @returns {Promise}
    */
-
-  getHashes(start: any, end: any) {
+  getHashes(start: number, end: number) {
     return super.call("get hashes", start, end);
   }
 
@@ -208,7 +216,6 @@ export default class NodeClient extends bcurl.Client {
    * @param {TX} tx
    * @returns {Promise}
    */
-
   send(tx: Buffer) {
     assert(Buffer.isBuffer(tx));
     return super.call("send", tx);
@@ -216,10 +223,9 @@ export default class NodeClient extends bcurl.Client {
 
   /**
    * Set bloom filter.
-   * @param {Bloom} filter
+   * @param {BloomFilter} filter
    * @returns {Promise}
    */
-
   setFilter(filter: Buffer) {
     assert(Buffer.isBuffer(filter));
     return super.call("set filter", filter);
@@ -227,11 +233,10 @@ export default class NodeClient extends bcurl.Client {
 
   /**
    * Add data to filter.
-   * @param {Buffer} data
+   * @param {Buffer|Buffer[]} chunks
    * @returns {Promise}
    */
-
-  addFilter(chunks: any) {
+  addFilter(chunks: Buffer | Array<Buffer>) {
     if (!Array.isArray(chunks)) chunks = [chunks];
 
     return super.call("add filter", chunks);
@@ -241,20 +246,20 @@ export default class NodeClient extends bcurl.Client {
    * Reset filter.
    * @returns {Promise}
    */
-
   resetFilter() {
     return super.call("reset filter");
   }
 
   /**
-   * Esimate smart fee.
+   * Estimate smart fee.
    * @param {Number?} blocks
    * @returns {Promise}
    */
-
-  estimateFee(blocks: number | null) {
+  estimateFee(blocks?: number) {
     assert(blocks == null || typeof blocks === "number");
-    return super.call("estimate fee", blocks);
+    let query = "/fee";
+    if (blocks != null) query += `?blocks=${blocks}`;
+    return super.get(query);
   }
 
   /**
@@ -262,12 +267,19 @@ export default class NodeClient extends bcurl.Client {
    * @param {Number|Hash} start - Start block.
    * @returns {Promise}
    */
-
-  rescan(start?: string | number) {
+  rescan(start?: any) {
     if (start == null) start = 0;
 
     assert(typeof start === "number" || typeof start === "string");
 
     return super.call("rescan", start);
+  }
+
+  /**
+   * Abort scanning blockchain
+   * @returns {Promise}
+   */
+  abortRescan() {
+    return super.call("abortrescan");
   }
 }

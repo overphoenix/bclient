@@ -5,18 +5,18 @@ import { Options } from "./types";
 
 /**
  * Wallet Client
+ * @alias module:client.WalletClient
  * @extends {bcurl.Client}
  */
-export default class WalletClient extends bcurl.Client {
-  wallets: Map<string, any>;
+export class WalletClient extends bcurl.Client {
+  wallets: Map<string, Wallet> = new Map();
+
   /**
    * Create a wallet client.
    * @param {Object?} options
    */
-
   constructor(options: Options) {
     super(options);
-    this.wallets = new Map();
   }
 
   /**
@@ -56,10 +56,12 @@ export default class WalletClient extends bcurl.Client {
 
   /**
    * Dispatch event.
+   * @param {Number} id
+   * @param {String} event
+   * @param {...Object} args
    * @private
    */
-
-  dispatch(id: string, event: any, ...args: any) {
+  dispatch(id: string, event: string, ...args: Array<any>) {
     const wallet = this.wallets.get(id);
 
     if (wallet) wallet.emit(event, ...args);
@@ -69,7 +71,6 @@ export default class WalletClient extends bcurl.Client {
    * Open the client.
    * @returns {Promise}
    */
-
   async open() {
     await super.open();
     this.init();
@@ -79,7 +80,6 @@ export default class WalletClient extends bcurl.Client {
    * Close the client.
    * @returns {Promise}
    */
-
   async close() {
     await super.close();
     this.wallets = new Map();
@@ -89,7 +89,6 @@ export default class WalletClient extends bcurl.Client {
    * Auth with server.
    * @returns {Promise}
    */
-
   async auth() {
     await super.call("auth", this.password);
   }
@@ -98,47 +97,47 @@ export default class WalletClient extends bcurl.Client {
    * Make an RPC call.
    * @returns {Promise}
    */
-
-  execute(name: any, params: any) {
+  execute(name: string, params: any) {
     return super.execute("/", name, params);
   }
 
   /**
    * Create a wallet object.
+   * @param {Number} id
+   * @param {String} token
    */
-
-  wallet(id: string, token?: any) {
+  wallet(id: string, token?: string) {
     return new Wallet(this, id, token);
   }
 
   /**
    * Join a wallet.
+   * @param {String} token
    */
-
-  all(token: any) {
+  all(token?: string) {
     return super.call("join", "*", token);
   }
 
   /**
    * Leave a wallet.
    */
-
   none() {
     return super.call("leave", "*");
   }
 
   /**
    * Join a wallet.
+   * @param {Number} id
+   * @param {String} token
    */
-
-  join(id: string, token: any) {
+  join(id: string, token?: string) {
     return super.call("join", id, token);
   }
 
   /**
    * Leave a wallet.
+   * @param {Number} id
    */
-
   leave(id: string) {
     return super.call("leave", id);
   }
@@ -148,7 +147,6 @@ export default class WalletClient extends bcurl.Client {
    * @param {Number} height
    * @returns {Promise}
    */
-
   rescan(height: number) {
     return super.post("/rescan", { height });
   }
@@ -157,7 +155,6 @@ export default class WalletClient extends bcurl.Client {
    * Resend pending transactions.
    * @returns {Promise}
    */
-
   resend() {
     return super.post("/resend");
   }
@@ -167,7 +164,6 @@ export default class WalletClient extends bcurl.Client {
    * @param {String} path
    * @returns {Promise}
    */
-
   backup(path: string) {
     return super.post("/backup", { path });
   }
@@ -176,74 +172,74 @@ export default class WalletClient extends bcurl.Client {
    * Get list of all wallet IDs.
    * @returns {Promise}
    */
-
   getWallets() {
     return super.get("/wallet");
   }
 
   /**
    * Create a wallet.
+   * @param {Number} id
    * @param {Object} options
    * @returns {Promise}
    */
-
   createWallet(id: string, options: any) {
     return super.put(`/wallet/${id}`, options);
   }
 
   /**
    * Get wallet transaction history.
+   * @param {Number} id
    * @param {String} account
    * @returns {Promise}
    */
-
-  getHistory(id: string, account: any) {
+  getHistory(id: string, account: string) {
     return super.get(`/wallet/${id}/tx/history`, { account });
   }
 
   /**
    * Get wallet coins.
+   * @param {Number} id
    * @param {String} account
    * @returns {Promise}
    */
-
-  getCoins(id: string, account: any) {
+  getCoins(id: string, account: string) {
     return super.get(`/wallet/${id}/coin`, { account });
   }
 
   /**
    * Get all unconfirmed transactions.
+   * @param {Number} id
    * @param {String} account
    * @returns {Promise}
    */
-
-  getPending(id: string, account: any) {
+  getPending(id: string, account: string) {
     return super.get(`/wallet/${id}/tx/unconfirmed`, { account });
   }
 
   /**
    * Calculate wallet balance.
+   * @param {Number} id
    * @param {String} account
    * @returns {Promise}
    */
-
-  getBalance(id: string, account: any) {
+  getBalance(id: string, account: string) {
     return super.get(`/wallet/${id}/balance`, { account });
   }
 
   /**
    * Get last N wallet transactions.
+   * @param {Number} id
    * @param {String} account
    * @param {Number} limit - Max number of transactions.
    * @returns {Promise}
    */
-
-  getLast(id: string, account: any, limit: any) {
+  getLast(id: string, account: string, limit: number) {
     return super.get(`/wallet/${id}/tx/last`, { account, limit });
   }
 
   /**
    * Get wallet transactions by timestamp range.
+   * @param {Number} id
    * @param {String} account
    * @param {Object} options
    * @param {Number} options.start - Start time.
@@ -252,8 +248,11 @@ export default class WalletClient extends bcurl.Client {
    * @param {Boolean?} options.reverse - Reverse order.
    * @returns {Promise}
    */
-
-  getRange(id: string, account: any, options: any) {
+  getRange(
+    id: string,
+    account: string,
+    options: { start: number; end: number; limit?: number; reverse?: boolean },
+  ) {
     return super.get(`/wallet/${id}/tx/range`, {
       account: account,
       start: options.start,
@@ -266,184 +265,196 @@ export default class WalletClient extends bcurl.Client {
   /**
    * Get transaction (only possible if the transaction
    * is available in the wallet history).
+   * @param {Number} id
    * @param {Hash} hash
    * @returns {Promise}
    */
-
   getTX(id: string, hash: string) {
     return super.get(`/wallet/${id}/tx/${hash}`);
   }
 
   /**
    * Get wallet blocks.
-   * @param {Number} height
+   * @param {Number} id
    * @returns {Promise}
    */
-
   getBlocks(id: string) {
     return super.get(`/wallet/${id}/block`);
   }
 
   /**
    * Get wallet block.
+   * @param {Number} id
    * @param {Number} height
    * @returns {Promise}
    */
-
-  getBlock(id: string, height: string | number) {
+  getBlock(id: string, height: number) {
     return super.get(`/wallet/${id}/block/${height}`);
   }
 
   /**
    * Get unspent coin (only possible if the transaction
    * is available in the wallet history).
+   * @param {Number} id
    * @param {Hash} hash
    * @param {Number} index
    * @returns {Promise}
    */
-
-  getCoin(id: string, hash: string, index: any) {
+  getCoin(id: string, hash: string, index: number) {
     return super.get(`/wallet/${id}/coin/${hash}/${index}`);
   }
 
   /**
-   * @param {Number} now - Current time.
+   * @param {Number} id
+   * @param {String} account
    * @param {Number} age - Age delta.
    * @returns {Promise}
    */
-
-  zap(id: string, account: any, age: any) {
+  zap(id: string, account: string, age: number) {
     return super.post(`/wallet/${id}/zap`, { account, age });
   }
 
   /**
+   * @param {Number} id
+   * @param {Hash} hash
+   * @returns {Promise}
+   */
+  abandon(id: string, hash: string) {
+    return super.del(`/wallet/${id}/tx/${hash}`);
+  }
+
+  /**
    * Create a transaction, fill.
+   * @param {Number} id
    * @param {Object} options
    * @returns {Promise}
    */
-
   createTX(id: string, options: any) {
     return super.post(`/wallet/${id}/create`, options);
   }
 
   /**
    * Create a transaction, fill, sign, and broadcast.
+   * @param {Number} id
    * @param {Object} options
    * @param {String} options.address
    * @param {Amount} options.value
    * @returns {Promise}
    */
-
   send(id: string, options: any) {
     return super.post(`/wallet/${id}/send`, options);
   }
 
   /**
    * Sign a transaction.
+   * @param {Number} id
    * @param {Object} options
    * @returns {Promise}
    */
-
   sign(id: string, options: any) {
     return super.post(`/wallet/${id}/sign`, options);
   }
 
   /**
    * Get the raw wallet JSON.
+   * @param {Number} id
    * @returns {Promise}
    */
-
   getInfo(id: string) {
     return super.get(`/wallet/${id}`);
   }
 
   /**
    * Get wallet accounts.
+   * @param {Number} id
    * @returns {Promise} - Returns Array.
    */
-
   getAccounts(id: string) {
     return super.get(`/wallet/${id}/account`);
   }
 
   /**
    * Get wallet master key.
+   * @param {Number} id
    * @returns {Promise}
    */
-
   getMaster(id: string) {
     return super.get(`/wallet/${id}/master`);
   }
 
   /**
    * Get wallet account.
+   * @param {Number} id
    * @param {String} account
    * @returns {Promise}
    */
-
   getAccount(id: string, account: string) {
     return super.get(`/wallet/${id}/account/${account}`);
   }
 
   /**
    * Create account.
+   * @param {Number} id
    * @param {String} name
    * @param {Object} options
    * @returns {Promise}
    */
-
   createAccount(id: string, name: string, options: any) {
     return super.put(`/wallet/${id}/account/${name}`, options);
   }
 
   /**
    * Create address.
-   * @param {Object} options
+   * @param {Number} id
+   * @param {String} account
    * @returns {Promise}
    */
-
-  createAddress(id: string, account: any) {
+  createAddress(id: string, account: string) {
     return super.post(`/wallet/${id}/address`, { account });
   }
 
   /**
    * Create change address.
-   * @param {Object} options
+   * @param {Number} id
+   * @param {String} account
    * @returns {Promise}
    */
-
-  createChange(id: string, account: any) {
+  createChange(id: string, account: string) {
     return super.post(`/wallet/${id}/change`, { account });
   }
 
   /**
    * Create nested address.
-   * @param {Object} options
+   * @param {Number} id
+   * @param {String} account
    * @returns {Promise}
    */
-
-  createNested(id: string, account: any) {
+  createNested(id: string, account: string) {
     return super.post(`/wallet/${id}/nested`, { account });
   }
 
   /**
    * Change or set master key`s passphrase.
+   * @param {Number} id
    * @param {String|Buffer} passphrase
    * @param {(String|Buffer)?} old
    * @returns {Promise}
    */
-
-  setPassphrase(id: string, passphrase: any, old: any) {
+  setPassphrase(
+    id: string,
+    passphrase: string | Buffer,
+    old?: string | Buffer,
+  ) {
     return super.post(`/wallet/${id}/passphrase`, { passphrase, old });
   }
 
   /**
    * Generate a new token.
+   * @param {Number} id
    * @param {(String|Buffer)?} passphrase
    * @returns {Promise}
    */
-
-  retoken(id: string, passphrase: any) {
+  retoken(id: string, passphrase?: string | Buffer) {
     return super.post(`/wallet/${id}/retoken`, {
       passphrase,
     });
@@ -451,12 +462,18 @@ export default class WalletClient extends bcurl.Client {
 
   /**
    * Import private key.
-   * @param {Number|String} account
-   * @param {String} key
+   * @param {Number} id
+   * @param {String} account
+   * @param {String} privateKey
+   * @param {String} passphrase
    * @returns {Promise}
    */
-
-  importPrivate(id: string, account: any, privateKey: any, passphrase: any) {
+  importPrivate(
+    id: string,
+    account: string,
+    privateKey: string,
+    passphrase?: string,
+  ) {
     return super.post(`/wallet/${id}/import`, {
       account,
       privateKey,
@@ -466,12 +483,12 @@ export default class WalletClient extends bcurl.Client {
 
   /**
    * Import public key.
+   * @param {Number} id
    * @param {Number|String} account
-   * @param {String} key
+   * @param {String} publicKey
    * @returns {Promise}
    */
-
-  importPublic(id: string, account: any, publicKey: any) {
+  importPublic(id: string, account: number | string, publicKey: string) {
     return super.post(`/wallet/${id}/import`, {
       account,
       publicKey,
@@ -480,114 +497,114 @@ export default class WalletClient extends bcurl.Client {
 
   /**
    * Import address.
-   * @param {Number|String} account
+   * @param {Number} id
+   * @param {String} account
    * @param {String} address
    * @returns {Promise}
    */
-
-  importAddress(id: string, account: any, address: any) {
+  importAddress(id: string, account: string, address: string) {
     return super.post(`/wallet/${id}/import`, { account, address });
   }
 
   /**
    * Lock a coin.
+   * @param {Number} id
    * @param {String} hash
    * @param {Number} index
    * @returns {Promise}
    */
-
-  lockCoin(id: string, hash: string, index: any) {
+  lockCoin(id: string, hash: string, index: number) {
     return super.put(`/wallet/${id}/locked/${hash}/${index}`);
   }
 
   /**
    * Unlock a coin.
+   * @param {Number} id
    * @param {String} hash
    * @param {Number} index
    * @returns {Promise}
    */
-
-  unlockCoin(id: string, hash: string, index: any) {
+  unlockCoin(id: string, hash: string, index: number) {
     return super.del(`/wallet/${id}/locked/${hash}/${index}`);
   }
 
   /**
    * Get locked coins.
+   * @param {Number} id
    * @returns {Promise}
    */
-
   getLocked(id: string) {
     return super.get(`/wallet/${id}/locked`);
   }
 
   /**
    * Lock wallet.
+   * @param {Number} id
    * @returns {Promise}
    */
-
   lock(id: string) {
     return super.post(`/wallet/${id}/lock`);
   }
 
   /**
    * Unlock wallet.
+   * @param {Number} id
    * @param {String} passphrase
    * @param {Number} timeout
    * @returns {Promise}
    */
-
-  unlock(id: string, passphrase: any, timeout: any) {
+  unlock(id: string, passphrase: string, timeout: number) {
     return super.post(`/wallet/${id}/unlock`, { passphrase, timeout });
   }
 
   /**
    * Get wallet key.
+   * @param {Number} id
    * @param {String} address
    * @returns {Promise}
    */
-
-  getKey(id: string, address: any) {
+  getKey(id: string, address: string) {
     return super.get(`/wallet/${id}/key/${address}`);
   }
 
   /**
    * Get wallet key WIF dump.
+   * @param {Number} id
    * @param {String} address
    * @param {String?} passphrase
    * @returns {Promise}
    */
-
-  getWIF(id: string, address: any, passphrase: any) {
+  getWIF(id: string, address: string, passphrase?: string) {
     return super.get(`/wallet/${id}/wif/${address}`, { passphrase });
   }
 
   /**
    * Add a public account key to the wallet for multisig.
+   * @param {Number} id
    * @param {String} account
-   * @param {String} key - Account (bip44) key (base58).
+   * @param {String} accountKey - Account (bip44) key (base58).
    * @returns {Promise}
    */
-
-  addSharedKey(id: string, account: any, accountKey: any) {
+  addSharedKey(id: string, account: string, accountKey: string) {
     return super.put(`/wallet/${id}/shared-key`, { account, accountKey });
   }
 
   /**
    * Remove a public account key to the wallet for multisig.
+   * @param {Number} id
    * @param {String} account
-   * @param {String} key - Account (bip44) key (base58).
+   * @param {String} accountKey - Account (bip44) key (base58).
    * @returns {Promise}
    */
-
-  removeSharedKey(id: string, account: any, accountKey: any) {
+  removeSharedKey(id: string, account: string, accountKey: string) {
     return super.del(`/wallet/${id}/shared-key`, { account, accountKey });
   }
 
   /**
    * Resend wallet transactions.
+   * @param {Number} id
    * @returns {Promise}
    */
-
   resendWallet(id: string) {
     return super.post(`/wallet/${id}/resend`);
   }
@@ -597,26 +614,21 @@ export default class WalletClient extends bcurl.Client {
  * Wallet Instance
  * @extends {EventEmitter}
  */
-class Wallet extends EventEmitter {
-  parent: WalletClient | Wallet;
-  wallets: Map<string, any>;
+
+export class Wallet extends EventEmitter {
   client: WalletClient;
   id: string;
-  token?: string | null;
+  token?: string;
 
   /**
    * Create a wallet client.
-   * @param {Object?} options
+   * @param {WalletClient} parent
+   * @param {Number} id
+   * @param {String} token
    */
-  constructor(
-    parent: WalletClient | Wallet,
-    id: string,
-    token?: string | null,
-  ) {
+  constructor(client: WalletClient, id: string, token?: string) {
     super();
-    this.wallets = new Map();
-    this.parent = parent;
-    this.client = parent.clone();
+    this.client = client.clone();
     this.client.token = token;
     this.id = id;
     this.token = token;
@@ -627,8 +639,8 @@ class Wallet extends EventEmitter {
    * @returns {Promise}
    */
   async open() {
-    await this.parent.join(this.id, this.token);
-    this.parent.wallets.set(this.id, this);
+    await this.client.join(this.id, this.token);
+    this.client.wallets.set(this.id, this);
   }
 
   /**
@@ -636,8 +648,8 @@ class Wallet extends EventEmitter {
    * @returns {Promise}
    */
   async close() {
-    await this.parent.leave(this.id);
-    this.parent.wallets.delete(this.id);
+    await this.client.leave(this.id);
+    this.client.wallets.delete(this.id);
   }
 
   /**
@@ -645,7 +657,7 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-  getHistory(account: any) {
+  getHistory(account: string) {
     return this.client.getHistory(this.id, account);
   }
 
@@ -654,7 +666,7 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-  getCoins(account: any) {
+  getCoins(account: string) {
     return this.client.getCoins(this.id, account);
   }
 
@@ -663,7 +675,7 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-  getPending(account: any) {
+  getPending(account: string) {
     return this.client.getPending(this.id, account);
   }
 
@@ -672,7 +684,7 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-  getBalance(account: any) {
+  getBalance(account: string) {
     return this.client.getBalance(this.id, account);
   }
 
@@ -682,7 +694,7 @@ class Wallet extends EventEmitter {
    * @param {Number} limit - Max number of transactions.
    * @returns {Promise}
    */
-  getLast(account: any, limit: any) {
+  getLast(account: string, limit: number) {
     return this.client.getLast(this.id, account, limit);
   }
 
@@ -696,7 +708,10 @@ class Wallet extends EventEmitter {
    * @param {Boolean?} options.reverse - Reverse order.
    * @returns {Promise}
    */
-  getRange(account: any, options: any) {
+  getRange(
+    account: string,
+    options: { start: number; end: number; limit?: number; reserved?: boolean },
+  ) {
     return this.client.getRange(this.id, account, options);
   }
 
@@ -706,13 +721,12 @@ class Wallet extends EventEmitter {
    * @param {Hash} hash
    * @returns {Promise}
    */
-  getTX(hash: any) {
+  getTX(hash: string) {
     return this.client.getTX(this.id, hash);
   }
 
   /**
    * Get wallet blocks.
-   * @param {Number} height
    * @returns {Promise}
    */
   getBlocks() {
@@ -724,7 +738,7 @@ class Wallet extends EventEmitter {
    * @param {Number} height
    * @returns {Promise}
    */
-  getBlock(height: any) {
+  getBlock(height: number) {
     return this.client.getBlock(this.id, height);
   }
 
@@ -735,17 +749,28 @@ class Wallet extends EventEmitter {
    * @param {Number} index
    * @returns {Promise}
    */
-  getCoin(hash: any, index: any) {
+  getCoin(hash: string, index: number) {
     return this.client.getCoin(this.id, hash, index);
   }
 
   /**
-   * @param {Number} now - Current time.
+   * @param {String} account
    * @param {Number} age - Age delta.
    * @returns {Promise}
    */
-  zap(account: any, age: any) {
+  zap(account: string, age: number) {
     return this.client.zap(this.id, account, age);
+  }
+
+  /**
+   * Used to remove a pending transaction from the wallet.
+   * That is likely the case if it has a policy or low fee
+   * that prevents it from proper network propagation.
+   * @param {Hash} hash
+   * @returns {Promise}
+   */
+  abandon(hash: string) {
+    return this.client.abandon(this.id, hash);
   }
 
   /**
@@ -773,7 +798,6 @@ class Wallet extends EventEmitter {
    * @param {Object} options
    * @returns {Promise}
    */
-
   sign(options: any) {
     return this.client.sign(this.id, options);
   }
@@ -782,7 +806,6 @@ class Wallet extends EventEmitter {
    * Get the raw wallet JSON.
    * @returns {Promise}
    */
-
   getInfo() {
     return this.client.getInfo(this.id);
   }
@@ -791,7 +814,6 @@ class Wallet extends EventEmitter {
    * Get wallet accounts.
    * @returns {Promise} - Returns Array.
    */
-
   getAccounts() {
     return this.client.getAccounts(this.id);
   }
@@ -800,7 +822,6 @@ class Wallet extends EventEmitter {
    * Get wallet master key.
    * @returns {Promise}
    */
-
   getMaster() {
     return this.client.getMaster(this.id);
   }
@@ -810,8 +831,7 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-
-  getAccount(account: any) {
+  getAccount(account: string) {
     return this.client.getAccount(this.id, account);
   }
 
@@ -821,38 +841,34 @@ class Wallet extends EventEmitter {
    * @param {Object} options
    * @returns {Promise}
    */
-
-  createAccount(name: any, options: any) {
+  createAccount(name: string, options: any) {
     return this.client.createAccount(this.id, name, options);
   }
 
   /**
    * Create address.
-   * @param {Object} options
+   * @param {String} account
    * @returns {Promise}
    */
-
-  createAddress(account: any) {
+  createAddress(account: string) {
     return this.client.createAddress(this.id, account);
   }
 
   /**
    * Create change address.
-   * @param {Object} options
+   * @param {String} account
    * @returns {Promise}
    */
-
-  createChange(account: any) {
+  createChange(account: string) {
     return this.client.createChange(this.id, account);
   }
 
   /**
    * Create nested address.
-   * @param {Object} options
+   * @param {String} account
    * @returns {Promise}
    */
-
-  createNested(account: any) {
+  createNested(account: string) {
     return this.client.createNested(this.id, account);
   }
 
@@ -862,8 +878,7 @@ class Wallet extends EventEmitter {
    * @param {(String|Buffer)?} old
    * @returns {Promise}
    */
-
-  setPassphrase(passphrase: any, old: any) {
+  setPassphrase(passphrase: string | Buffer, old?: string | Buffer) {
     return this.client.setPassphrase(this.id, passphrase, old);
   }
 
@@ -872,8 +887,7 @@ class Wallet extends EventEmitter {
    * @param {(String|Buffer)?} passphrase
    * @returns {Promise}
    */
-
-  async retoken(passphrase: any) {
+  async retoken(passphrase: string | Buffer) {
     const result = await this.client.retoken(this.id, passphrase);
 
     assert(result);
@@ -887,22 +901,21 @@ class Wallet extends EventEmitter {
   /**
    * Import private key.
    * @param {Number|String} account
-   * @param {String} key
+   * @param {String} privateKey
+   * @param {String} passphrase
    * @returns {Promise}
    */
-
-  importPrivate(account: any, privateKey: any, passphrase: any) {
+  importPrivate(account: string, privateKey: string, passphrase?: string) {
     return this.client.importPrivate(this.id, account, privateKey, passphrase);
   }
 
   /**
    * Import public key.
    * @param {Number|String} account
-   * @param {String} key
+   * @param {String} publicKey
    * @returns {Promise}
    */
-
-  importPublic(account: any, publicKey: any) {
+  importPublic(account: string, publicKey: string) {
     return this.client.importPublic(this.id, account, publicKey);
   }
 
@@ -912,8 +925,7 @@ class Wallet extends EventEmitter {
    * @param {String} address
    * @returns {Promise}
    */
-
-  importAddress(account: any, address: any) {
+  importAddress(account: string, address: string) {
     return this.client.importAddress(this.id, account, address);
   }
 
@@ -923,8 +935,7 @@ class Wallet extends EventEmitter {
    * @param {Number} index
    * @returns {Promise}
    */
-
-  lockCoin(hash: any, index: any) {
+  lockCoin(hash: string, index: number) {
     return this.client.lockCoin(this.id, hash, index);
   }
 
@@ -934,8 +945,7 @@ class Wallet extends EventEmitter {
    * @param {Number} index
    * @returns {Promise}
    */
-
-  unlockCoin(hash: any, index: any) {
+  unlockCoin(hash: string, index: number) {
     return this.client.unlockCoin(this.id, hash, index);
   }
 
@@ -943,7 +953,6 @@ class Wallet extends EventEmitter {
    * Get locked coins.
    * @returns {Promise}
    */
-
   getLocked() {
     return this.client.getLocked(this.id);
   }
@@ -952,7 +961,6 @@ class Wallet extends EventEmitter {
    * Lock wallet.
    * @returns {Promise}
    */
-
   lock() {
     return this.client.lock(this.id);
   }
@@ -963,8 +971,7 @@ class Wallet extends EventEmitter {
    * @param {Number} timeout
    * @returns {Promise}
    */
-
-  unlock(passphrase: any, timeout: any) {
+  unlock(passphrase: string, timeout: number) {
     return this.client.unlock(this.id, passphrase, timeout);
   }
 
@@ -973,8 +980,7 @@ class Wallet extends EventEmitter {
    * @param {String} address
    * @returns {Promise}
    */
-
-  getKey(address: any) {
+  getKey(address: string) {
     return this.client.getKey(this.id, address);
   }
 
@@ -984,30 +990,27 @@ class Wallet extends EventEmitter {
    * @param {String?} passphrase
    * @returns {Promise}
    */
-
-  getWIF(address: any, passphrase: any) {
+  getWIF(address: string, passphrase?: string) {
     return this.client.getWIF(this.id, address, passphrase);
   }
 
   /**
    * Add a public account key to the wallet for multisig.
    * @param {String} account
-   * @param {String} key - Account (bip44) key (base58).
+   * @param {String} accountKey - Account (bip44) key (base58).
    * @returns {Promise}
    */
-
-  addSharedKey(account: any, accountKey: any) {
+  addSharedKey(account: string, accountKey: string) {
     return this.client.addSharedKey(this.id, account, accountKey);
   }
 
   /**
    * Remove a public account key to the wallet for multisig.
    * @param {String} account
-   * @param {String} key - Account (bip44) key (base58).
+   * @param {String} accountKey - Account (bip44) key (base58).
    * @returns {Promise}
    */
-
-  removeSharedKey(account: any, accountKey: any) {
+  removeSharedKey(account: string, accountKey: string) {
     return this.client.removeSharedKey(this.id, account, accountKey);
   }
 
@@ -1015,7 +1018,6 @@ class Wallet extends EventEmitter {
    * Resend wallet transactions.
    * @returns {Promise}
    */
-
   resend() {
     return this.client.resendWallet(this.id);
   }
