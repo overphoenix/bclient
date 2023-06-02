@@ -1,6 +1,6 @@
 {
   "name": "@recalibratedsystems/bclient",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Bcoin node and wallet client",
   "license": "MIT",
   "repository": "git://github.com/overphoenix/bclient.git",
@@ -18,9 +18,12 @@
     "update-deps": "npx npm-check-updates --deep -u"
   },
   "dependencies": {
-    "bcfg": "~0.2.1",
-    "bcurl": "~0.2.0",
-    "bsert": "~0.0.10"
+    "bcfg": "git+https://github.com/bcoin-org/bcfg.git#semver:~0.2.1",
+    "bcurl": "git+https://github.com/bcoin-org/bcurl.git#semver:^0.2.0",
+    "bsert": "git+https://github.com/chjj/bsert.git#semver:~0.0.10",
+    "bufio": "git+https://github.com/bcoin-org/bufio.git#semver:~1.2.0",
+    "bcrypto": "git+https://github.com/bcoin-org/bcrypto.git#semver:~5.5.0",
+    "n64": "git+https://github.com/chjj/n64.git#semver:~0.2.10"
   },
   "engines": {
     "node": ">=18.0.0"

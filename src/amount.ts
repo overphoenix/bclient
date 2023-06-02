@@ -6,11 +6,9 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import * as assert from "bsert";
-import * as fixed from "./utils/fixed";
-
-import { inspect } from "node:util";
-const inspectSymbol = inspect.custom || "inspect";
+import assert from "bsert";
+import fixed from "./bcoin/utils/fixed";
+import { inspectSymbol } from "./bcoin/utils";
 
 /**
  * Amount

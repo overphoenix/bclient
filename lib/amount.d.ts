@@ -9,11 +9,11 @@ export default class Amount {
     fromOptions(value: any, unit: any): this;
     toValue(): number;
     toSatoshis(num?: boolean): string | number;
-    toBits(num: any): string | number;
-    toMBTC(num: any): string | number;
-    toBTC(num?: number): string | number;
-    to(unit: any, num: any): string | number;
-    toString(): string | number;
+    toBits(num: any): any;
+    toMBTC(num: any): any;
+    toBTC(num?: number): any;
+    to(unit: any, num: any): any;
+    toString(): any;
     fromValue(value: any): this;
     fromSatoshis(value: any): this;
     fromBits(value: any): this;
@@ -27,8 +27,8 @@ export default class Amount {
     static fromMBTC(value: any): Amount;
     static fromBTC(value: any): Amount;
     static from(unit: any, value: any): Amount;
-    static btc(value: number | string, num: boolean): string | number;
-    static value(str: any): number;
-    static encode(value: number, exp: number, num?: boolean): string | number;
-    static decode(value: string | number, exp: number): number;
+    static btc(value: number | string, num: boolean): any;
+    static value(str: any): any;
+    static encode(value: number, exp: number, num?: boolean): any;
+    static decode(value: string | number, exp: number): any;
 }

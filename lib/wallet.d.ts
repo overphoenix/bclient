@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import * as bcurl from "bcurl";
+import bcurl from "bcurl";
 import EventEmitter from "node:events";
 import { ClientOptions } from "./types";
 export default class WalletClient extends bcurl.Client {
@@ -11,7 +11,7 @@ export default class WalletClient extends bcurl.Client {
     close(): Promise<void>;
     auth(): Promise<void>;
     execute(name: any, params: any): any;
-    wallet(id: string, token: any): Wallet;
+    wallet(id: string, token?: any): Wallet;
     all(token: any): any;
     none(): any;
     join(id: string, token: any): any;
@@ -61,10 +61,11 @@ export default class WalletClient extends bcurl.Client {
 }
 declare class Wallet extends EventEmitter {
     parent: WalletClient | Wallet;
+    wallets: Map<string, any>;
     client: WalletClient;
     id: string;
-    token: string | null;
-    constructor(parent: WalletClient | Wallet, id: string, token: string | null);
+    token?: string | null;
+    constructor(parent: WalletClient | Wallet, id: string, token?: string | null);
     open(): Promise<void>;
     close(): Promise<void>;
     getHistory(account: any): any;

@@ -1,5 +1,5 @@
-import * as assert from "bsert";
-import * as bcurl from "bcurl";
+import assert from "bsert";
+import bcurl from "bcurl";
 import EventEmitter from "node:events";
 import { ClientOptions } from "./types";
 
@@ -107,7 +107,7 @@ export default class WalletClient extends bcurl.Client {
    * Create a wallet object.
    */
 
-  wallet(id: string, token: any) {
+  wallet(id: string, token?: any) {
     return new Wallet(this, id, token);
   }
 
@@ -580,7 +580,7 @@ export default class WalletClient extends bcurl.Client {
    */
 
   removeSharedKey(id: string, account: any, accountKey: any) {
-    return SUPER.del(`/wallet/${id}/shared-key`, { account, accountKey });
+    return super.del(`/wallet/${id}/shared-key`, { account, accountKey });
   }
 
   /**
@@ -597,19 +597,24 @@ export default class WalletClient extends bcurl.Client {
  * Wallet Instance
  * @extends {EventEmitter}
  */
-
 class Wallet extends EventEmitter {
   parent: WalletClient | Wallet;
+  wallets: Map<string, any>;
   client: WalletClient;
   id: string;
-  token: string | null;
+  token?: string | null;
 
   /**
    * Create a wallet client.
    * @param {Object?} options
    */
-  constructor(parent: WalletClient | Wallet, id: string, token: string | null) {
+  constructor(
+    parent: WalletClient | Wallet,
+    id: string,
+    token?: string | null,
+  ) {
     super();
+    this.wallets = new Map();
     this.parent = parent;
     this.client = parent.clone();
     this.client.token = token;
@@ -621,7 +626,6 @@ class Wallet extends EventEmitter {
    * Open wallet.
    * @returns {Promise}
    */
-
   async open() {
     await this.parent.join(this.id, this.token);
     this.parent.wallets.set(this.id, this);
@@ -631,7 +635,6 @@ class Wallet extends EventEmitter {
    * Close wallet.
    * @returns {Promise}
    */
-
   async close() {
     await this.parent.leave(this.id);
     this.parent.wallets.delete(this.id);
@@ -642,7 +645,6 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-
   getHistory(account: any) {
     return this.client.getHistory(this.id, account);
   }
@@ -652,7 +654,6 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-
   getCoins(account: any) {
     return this.client.getCoins(this.id, account);
   }
@@ -662,7 +663,6 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-
   getPending(account: any) {
     return this.client.getPending(this.id, account);
   }
@@ -672,7 +672,6 @@ class Wallet extends EventEmitter {
    * @param {String} account
    * @returns {Promise}
    */
-
   getBalance(account: any) {
     return this.client.getBalance(this.id, account);
   }
@@ -683,7 +682,6 @@ class Wallet extends EventEmitter {
    * @param {Number} limit - Max number of transactions.
    * @returns {Promise}
    */
-
   getLast(account: any, limit: any) {
     return this.client.getLast(this.id, account, limit);
   }
@@ -698,7 +696,6 @@ class Wallet extends EventEmitter {
    * @param {Boolean?} options.reverse - Reverse order.
    * @returns {Promise}
    */
-
   getRange(account: any, options: any) {
     return this.client.getRange(this.id, account, options);
   }
@@ -709,7 +706,6 @@ class Wallet extends EventEmitter {
    * @param {Hash} hash
    * @returns {Promise}
    */
-
   getTX(hash: any) {
     return this.client.getTX(this.id, hash);
   }
@@ -719,7 +715,6 @@ class Wallet extends EventEmitter {
    * @param {Number} height
    * @returns {Promise}
    */
-
   getBlocks() {
     return this.client.getBlocks(this.id);
   }
@@ -729,7 +724,6 @@ class Wallet extends EventEmitter {
    * @param {Number} height
    * @returns {Promise}
    */
-
   getBlock(height: any) {
     return this.client.getBlock(this.id, height);
   }
@@ -741,7 +735,6 @@ class Wallet extends EventEmitter {
    * @param {Number} index
    * @returns {Promise}
    */
-
   getCoin(hash: any, index: any) {
     return this.client.getCoin(this.id, hash, index);
   }
@@ -751,7 +744,6 @@ class Wallet extends EventEmitter {
    * @param {Number} age - Age delta.
    * @returns {Promise}
    */
-
   zap(account: any, age: any) {
     return this.client.zap(this.id, account, age);
   }
@@ -761,7 +753,6 @@ class Wallet extends EventEmitter {
    * @param {Object} options
    * @returns {Promise}
    */
-
   createTX(options: any) {
     return this.client.createTX(this.id, options);
   }
@@ -773,7 +764,6 @@ class Wallet extends EventEmitter {
    * @param {Amount} options.value
    * @returns {Promise}
    */
-
   send(options: any) {
     return this.client.send(this.id, options);
   }
