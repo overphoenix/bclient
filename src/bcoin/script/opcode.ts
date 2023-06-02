@@ -5,8 +5,8 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
-import bio from "bufio";
+import * as assert from "bsert";
+import * as bio from "bufio";
 import ScriptNum from "./scriptnum";
 import common from "./common";
 const opcodes = common.opcodes;

@@ -9,7 +9,7 @@
  * @module protocol/networks
  */
 
-import BN from "bcrypto/lib/bn.js";
+import * as BN from "bcrypto/lib/bn.js";
 
 const network: any = {};
 

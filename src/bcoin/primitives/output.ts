@@ -5,9 +5,9 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
-import bio from "bufio";
-import Amount from "../../amount";
+import * as assert from "bsert";
+import * as bio from "bufio";
+import Amount from "../btc/amount";
 import { inspectSymbol } from "../utils";
 import Network from "../protocol/network";
 import Address from "../primitives/address";

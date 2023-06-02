@@ -4,7 +4,7 @@
  * Copyright (c) 2014-2017, Christopher Jeffrey (MIT License).
  * https://github.com/bcoin-org/bcoin
  */
-import assert from "bsert";
+import * as assert from "bsert";
 import { search as binarySearch } from "../utils/binary";
 import networks from "./networks";
 import consensus from "./consensus";
@@ -205,7 +205,7 @@ export default class Network {
    * @returns {Network}
    */
 
-  static by(value, compare, network, name) {
+  static by(value, compare, network, name?: string) {
     if (network) {
       network = Network.get(network);
       if (compare(network, value)) return network;

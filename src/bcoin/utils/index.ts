@@ -1,4 +1,4 @@
-export * from "./util";
+export * as util from "./util";
 
 import { inspect } from "node:util";
 

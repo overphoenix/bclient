@@ -1,6 +1,6 @@
-import assert from "bsert";
-import bcurl from "bcurl";
-import EventEmitter from "node:events";
+import * as assert from "bsert";
+import * as bcurl from "bcurl";
+import { EventEmitter } from "node:events";
 import { ClientOptions } from "./types";
 
 /**

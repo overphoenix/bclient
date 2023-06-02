@@ -5,8 +5,8 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import EventEmitter from "node:events";
-import { now } from "../utils";
+import { EventEmitter } from "node:events";
+import { now } from "../utils/util";
 import { insert as binaryInsert } from "../utils/binary";
 
 /**

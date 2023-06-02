@@ -5,17 +5,15 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-'use strict';
-
-const assert = require('bsert');
-const bio = require('bufio');
-const Script = require('./script');
-const common = require('./common');
-const Address = require('../primitives/address');
-const Stack = require('./stack');
-const {encoding} = bio;
+import * as assert from "bsert";
+import * as bio from "bufio";
+import Script from "./script";
+import common from "./common";
+import Address from "../primitives/address";
+import Stack from "./stack";
+import { inspectSymbol } from "../utils";
+const { encoding } = bio;
 const scriptTypes = common.types;
-const {inspectSymbol} = require('../utils');
 
 /**
  * Witness
@@ -28,7 +26,7 @@ const {inspectSymbol} = require('../utils');
  * @property {Number} length
  */
 
-class Witness extends Stack {
+export default class Witness extends Stack {
   /**
    * Create a witness.
    * @alias module:script.Witness
@@ -40,11 +38,10 @@ class Witness extends Stack {
    * @property {Number} length
    */
 
-  constructor(options) {
+  constructor(options?: any) {
     super();
 
-    if (options)
-      this.fromOptions(options);
+    if (options) this.fromOptions(options);
   }
 
   /**
@@ -53,14 +50,12 @@ class Witness extends Stack {
    * @param {Object} options
    */
 
-  fromOptions(options) {
-    assert(options, 'Witness data is required.');
+  fromOptions(options: any) {
+    assert(options, "Witness data is required.");
 
-    if (Array.isArray(options))
-      return this.fromArray(options);
+    if (Array.isArray(options)) return this.fromArray(options);
 
-    if (options.items)
-      return this.fromArray(options.items);
+    if (options.items) return this.fromArray(options.items);
 
     return this;
   }
@@ -71,8 +66,8 @@ class Witness extends Stack {
    * @returns {Witness}
    */
 
-  static fromOptions(options) {
-    return new this().fromOptions(options);
+  static fromOptions(options: any) {
+    return new Witness().fromOptions(options);
   }
 
   /**
@@ -103,7 +98,7 @@ class Witness extends Stack {
    */
 
   static fromArray(items) {
-    return new this().fromArray(items);
+    return new Witness().fromArray(items);
   }
 
   /**
@@ -134,7 +129,7 @@ class Witness extends Stack {
    */
 
   static fromItems(items) {
-    return new this().fromItems(items);
+    return new Witness().fromItems(items);
   }
 
   /**
@@ -163,7 +158,7 @@ class Witness extends Stack {
    */
 
   static fromStack(stack) {
-    return new this().fromStack(stack);
+    return new Witness().fromStack(stack);
   }
 
   /**
@@ -181,7 +176,7 @@ class Witness extends Stack {
    */
 
   clone() {
-    return new this.constructor().inject(this);
+    return new Witness.constructor().inject(this);
   }
 
   /**
@@ -213,11 +208,9 @@ class Witness extends Stack {
    */
 
   getInputType() {
-    if (this.isPubkeyhashInput())
-      return scriptTypes.WITNESSPUBKEYHASH;
+    if (this.isPubkeyhashInput()) return scriptTypes.WITNESSPUBKEYHASH;
 
-    if (this.isScripthashInput())
-      return scriptTypes.WITNESSSCRIPTHASH;
+    if (this.isScripthashInput()) return scriptTypes.WITNESSSCRIPTHASH;
 
     return scriptTypes.NONSTANDARD;
   }
@@ -259,9 +252,11 @@ class Witness extends Stack {
    */
 
   isPubkeyhashInput() {
-    return this.items.length === 2
-      && common.isSignatureEncoding(this.items[0])
-      && common.isKeyEncoding(this.items[1]);
+    return (
+      this.items.length === 2 &&
+      common.isSignatureEncoding(this.items[0]) &&
+      common.isKeyEncoding(this.items[1])
+    );
   }
 
   /**
@@ -270,8 +265,7 @@ class Witness extends Stack {
    */
 
   getPubkeyhashInput() {
-    if (!this.isPubkeyhashInput())
-      return [null, null];
+    if (!this.isPubkeyhashInput()) return [null, null];
     return [this.items[0], this.items[1]];
   }
 
@@ -311,8 +305,7 @@ class Witness extends Stack {
    */
 
   getScripthashInput() {
-    if (!this.isScripthashInput())
-      return null;
+    if (!this.isScripthashInput()) return null;
     return this.items[this.items.length - 1];
   }
 
@@ -334,11 +327,9 @@ class Witness extends Stack {
 
   test(filter) {
     for (const item of this.items) {
-      if (item.length === 0)
-        continue;
+      if (item.length === 0) continue;
 
-      if (filter.test(item))
-        return true;
+      if (filter.test(item)) return true;
     }
 
     return false;
@@ -350,13 +341,11 @@ class Witness extends Stack {
    */
 
   getRedeem() {
-    if (this.items.length === 0)
-      return null;
+    if (this.items.length === 0) return null;
 
     const redeem = this.items[this.items.length - 1];
 
-    if (!redeem)
-      return null;
+    if (!redeem) return null;
 
     return Script.fromRaw(redeem);
   }
@@ -370,8 +359,7 @@ class Witness extends Stack {
   indexOf(data) {
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items[i];
-      if (item.equals(data))
-        return i;
+      if (item.equals(data)) return i;
     }
     return -1;
   }
@@ -385,8 +373,7 @@ class Witness extends Stack {
   getSize() {
     let size = 0;
 
-    for (const item of this.items)
-      size += encoding.sizeVarBytes(item);
+    for (const item of this.items) size += encoding.sizeVarBytes(item);
 
     return size;
   }
@@ -409,8 +396,7 @@ class Witness extends Stack {
   toWriter(bw) {
     bw.writeVarint(this.items.length);
 
-    for (const item of this.items)
-      bw.writeVarBytes(item);
+    for (const item of this.items) bw.writeVarBytes(item);
 
     return bw;
   }
@@ -431,7 +417,7 @@ class Witness extends Stack {
    */
 
   toJSON() {
-    return this.toRaw().toString('hex');
+    return this.toRaw().toString("hex");
   }
 
   /**
@@ -441,8 +427,8 @@ class Witness extends Stack {
    */
 
   fromJSON(json) {
-    assert(typeof json === 'string', 'Witness must be a string.');
-    return this.fromRaw(Buffer.from(json, 'hex'));
+    assert(typeof json === "string", "Witness must be a string.");
+    return this.fromRaw(Buffer.from(json, "hex"));
   }
 
   /**
@@ -452,7 +438,7 @@ class Witness extends Stack {
    */
 
   static fromJSON(json) {
-    return new this().fromJSON(json);
+    return new Witness().fromJSON(json);
   }
 
   /**
@@ -464,8 +450,7 @@ class Witness extends Stack {
   fromReader(br) {
     const count = br.readVarint();
 
-    for (let i = 0; i < count; i++)
-      this.items.push(br.readVarBytes());
+    for (let i = 0; i < count; i++) this.items.push(br.readVarBytes());
 
     return this;
   }
@@ -486,7 +471,7 @@ class Witness extends Stack {
    */
 
   static fromReader(br) {
-    return new this().fromReader(br);
+    return new Witness().fromReader(br);
   }
 
   /**
@@ -497,9 +482,8 @@ class Witness extends Stack {
    */
 
   static fromRaw(data, enc) {
-    if (typeof data === 'string')
-      data = Buffer.from(data, enc);
-    return new this().fromRaw(data);
+    if (typeof data === "string") data = Buffer.from(data, enc);
+    return new Witness().fromRaw(data);
   }
 
   /**
@@ -508,20 +492,18 @@ class Witness extends Stack {
    * @param {String|String[]} items
    */
 
-  fromString(items) {
+  fromString(items: any) {
     if (!Array.isArray(items)) {
-      assert(typeof items === 'string');
+      assert(typeof items === "string");
 
       items = items.trim();
 
-      if (items.length === 0)
-        return this;
+      if (items.length === 0) return this;
 
       items = items.split(/\s+/);
     }
 
-    for (const item of items)
-      this.items.push(Buffer.from(item, 'hex'));
+    for (const item of items) this.items.push(Buffer.from(item, "hex"));
 
     return this;
   }
@@ -536,8 +518,8 @@ class Witness extends Stack {
    * @throws Parse error.
    */
 
-  static fromString(items) {
-    return new this().fromString(items);
+  static fromString(items: string) {
+    return new Witness().fromString(items);
   }
 
   /**
@@ -550,9 +532,3 @@ class Witness extends Stack {
     return obj instanceof Witness;
   }
 }
-
-/*
- * Expose
- */
-
-module.exports = Witness;

@@ -5,7 +5,7 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
+import * as assert from "bsert";
 import common from "./common";
 import { inspectSymbol } from "../utils";
 const scriptTypes = common.types;

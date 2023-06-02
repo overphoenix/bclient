@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import bcurl from "bcurl";
-import EventEmitter from "node:events";
+import * as bcurl from "bcurl";
+import { EventEmitter } from "node:events";
 import { ClientOptions } from "./types";
 export default class WalletClient extends bcurl.Client {
     wallets: Map<string, any>;

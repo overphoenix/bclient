@@ -11,8 +11,8 @@
  * @module script/common
  */
 
-import assert from "bsert";
-import secp256k1 from "bcrypto/lib/secp256k1";
+import * as assert from "bsert";
+import * as secp256k1 from "bcrypto/lib/secp256k1";
 import ScriptNum from "./scriptnum";
 
 const common: any = {};

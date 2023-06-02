@@ -7,15 +7,15 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
-import bio from "bufio";
+import * as assert from "bsert";
+import * as bio from "bufio";
 import { inspectSymbol } from "../utils";
-import base58 from "bcrypto/lib/encoding/base58";
-import bech32 from "bcrypto/lib/encoding/bech32";
-import bech32m from "bcrypto/lib/encoding/bech32m";
-import sha256 from "bcrypto/lib/sha256";
-import hash160 from "bcrypto/lib/hash160";
-import hash256 from "bcrypto/lib/hash256";
+import * as base58 from "bcrypto/lib/encoding/base58";
+import * as bech32 from "bcrypto/lib/encoding/bech32";
+import * as bech32m from "bcrypto/lib/encoding/bech32m";
+import * as sha256 from "bcrypto/lib/sha256";
+import * as hash160 from "bcrypto/lib/hash160";
+import * as hash256 from "bcrypto/lib/hash256";
 import Network from "../protocol/network";
 import consensus from "../protocol/consensus";
 
@@ -40,7 +40,7 @@ export default class Address {
    * @param {Network} network
    */
 
-  constructor(options, network) {
+  constructor(options?: any, network?: any) {
     this.type = Address.types.WITNESS;
     this.version = 0;
     this.hash = ZERO_HASH160;
@@ -73,7 +73,7 @@ export default class Address {
    */
 
   static fromOptions(options, network) {
-    return new this().fromOptions(options, network);
+    return new Address().fromOptions(options, network);
   }
 
   /**
@@ -303,8 +303,8 @@ export default class Address {
    * @returns {Address}
    */
 
-  static fromString(addr, network) {
-    return new this().fromString(addr, network);
+  static fromString(addr: string, network?: any) {
+    return new Address().fromString(addr, network);
   }
 
   /**
@@ -371,7 +371,7 @@ export default class Address {
    */
 
   static fromRaw(data, network) {
-    return new this().fromRaw(data, network);
+    return new Address().fromRaw(data, network);
   }
 
   /**
@@ -399,7 +399,7 @@ export default class Address {
    */
 
   static fromBase58(data, network) {
-    return new this().fromBase58(data, network);
+    return new Address().fromBase58(data, network);
   }
 
   /**
@@ -435,8 +435,8 @@ export default class Address {
    * @throws Parse error.
    */
 
-  static fromBech32(data, network) {
-    return new this().fromBech32(data, network);
+  static fromBech32(data, network?: any) {
+    return new Address().fromBech32(data, network);
   }
 
   /**
@@ -473,7 +473,7 @@ export default class Address {
    */
 
   static fromBech32m(data, network) {
-    return new this().fromBech32m(data, network);
+    return new Address().fromBech32m(data, network);
   }
 
   /**
@@ -597,7 +597,7 @@ export default class Address {
    */
 
   static fromWitness(witness) {
-    return new this().fromWitness(witness);
+    return new Address().fromWitness(witness);
   }
 
   /**
@@ -609,7 +609,7 @@ export default class Address {
    */
 
   static fromInputScript(script) {
-    return new this().fromInputScript(script);
+    return new Address().fromInputScript(script);
   }
 
   /**
@@ -622,7 +622,7 @@ export default class Address {
    */
 
   static fromScript(script) {
-    return new this().fromScript(script);
+    return new Address().fromScript(script);
   }
 
   /**
@@ -685,7 +685,7 @@ export default class Address {
    */
 
   static fromHash(hash, type, version) {
-    return new this().fromHash(hash, type, version);
+    return new Address().fromHash(hash, type, version);
   }
 
   /**
@@ -708,7 +708,7 @@ export default class Address {
    */
 
   static fromPubkeyhash(hash) {
-    return new this().fromPubkeyhash(hash);
+    return new Address().fromPubkeyhash(hash);
   }
 
   /**
@@ -731,7 +731,7 @@ export default class Address {
    */
 
   static fromScripthash(hash) {
-    return new this().fromScripthash(hash);
+    return new Address().fromScripthash(hash);
   }
 
   /**
@@ -754,7 +754,7 @@ export default class Address {
    */
 
   static fromWitnessPubkeyhash(hash) {
-    return new this().fromWitnessPubkeyhash(hash);
+    return new Address().fromWitnessPubkeyhash(hash);
   }
 
   /**
@@ -777,7 +777,7 @@ export default class Address {
    */
 
   static fromWitnessScripthash(hash) {
-    return new this().fromWitnessScripthash(hash);
+    return new Address().fromWitnessScripthash(hash);
   }
 
   /**
@@ -804,7 +804,7 @@ export default class Address {
    */
 
   static fromProgram(version, hash) {
-    return new this().fromProgram(version, hash);
+    return new Address().fromProgram(version, hash);
   }
 
   /**

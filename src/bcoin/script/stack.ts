@@ -5,7 +5,7 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
+import * as assert from "bsert";
 import common from "./common";
 import ScriptNum from "./scriptnum";
 import { inspectSymbol } from "../utils";
@@ -25,7 +25,7 @@ export default class Stack {
    * @param {Buffer[]?} items - Stack items.
    */
 
-  constructor(items) {
+  constructor(items?: any) {
     this.items = items || [];
   }
 
@@ -116,7 +116,7 @@ export default class Stack {
    */
 
   clone() {
-    return new this.constructor(this.items.slice());
+    return new Stack(this.items.slice());
   }
 
   /**
@@ -502,7 +502,7 @@ export default class Stack {
     return item.toString(enc || "utf8");
   }
 
-  static fromString(str, enc) {
+  static fromString(str: string, enc?: any) {
     assert(typeof str === "string");
     return Buffer.from(str, enc || "utf8");
   }

@@ -5,14 +5,14 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
-import bio from "bufio";
-import ripemd160 from "bcrypto/lib/ripemd160";
-import sha1 from "bcrypto/lib/sha1";
-import sha256 from "bcrypto/lib/sha256";
-import hash160 from "bcrypto/lib/hash160";
-import hash256 from "bcrypto/lib/hash256";
-import secp256k1 from "bcrypto/lib/secp256k1";
+import * as assert from "bsert";
+import * as bio from "bufio";
+import * as ripemd160 from "bcrypto/lib/ripemd160";
+import * as sha1 from "bcrypto/lib/sha1";
+import * as sha256 from "bcrypto/lib/sha256";
+import * as hash160 from "bcrypto/lib/hash160";
+import * as hash256 from "bcrypto/lib/hash256";
+import * as secp256k1 from "bcrypto/lib/secp256k1";
 import consensus from "../protocol/consensus";
 import policy from "../protocol/policy";
 import Program from "./program";
@@ -1917,7 +1917,7 @@ export default class Script {
    * @returns {Boolean}
    */
 
-  isNulldata(minimal) {
+  isNulldata(minimal?: boolean) {
     if (this.code.length === 0) return false;
 
     if (this.getOp(0) !== opcodes.OP_RETURN) return false;
@@ -3147,7 +3147,7 @@ export default class Script {
    * @returns {Script}
    */
 
-  static fromRaw(data, enc) {
+  static fromRaw(data, enc?: BufferEncoding) {
     if (typeof data === "string") data = Buffer.from(data, enc);
     return new this().fromRaw(data);
   }

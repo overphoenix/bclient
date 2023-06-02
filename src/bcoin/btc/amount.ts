@@ -6,9 +6,9 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
-import fixed from "./bcoin/utils/fixed";
-import { inspectSymbol } from "./bcoin/utils";
+import * as assert from "bsert";
+import { fromFloat, toFloat, encode, decode } from "../utils/fixed";
+import { inspectSymbol } from "../utils";
 
 /**
  * Amount
@@ -308,7 +308,7 @@ export default class Amount {
    * @returns {String} BTC string.
    */
 
-  static btc(value: number | string, num: boolean) {
+  static btc(value: number | string, num?: boolean) {
     if (typeof value === "string") return value;
 
     return Amount.encode(value, 8, num);
@@ -336,8 +336,8 @@ export default class Amount {
    */
 
   static encode(value: number, exp: number, num?: boolean) {
-    if (num) return fixed.toFloat(value, exp);
-    return fixed.encode(value, exp);
+    if (num) return toFloat(value, exp);
+    return encode(value, exp);
   }
 
   /**
@@ -349,7 +349,7 @@ export default class Amount {
    */
 
   static decode(value: string | number, exp: number) {
-    if (typeof value === "number") return fixed.fromFloat(value, exp);
-    return fixed.decode(value, exp);
+    if (typeof value === "number") return fromFloat(value, exp);
+    return decode(value, exp);
   }
 }

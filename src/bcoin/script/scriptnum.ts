@@ -4,8 +4,8 @@
  * https://github.com/bcoin-org/bcoin
  */
 
-import assert from "bsert";
-import n64 from "n64";
+import * as assert from "bsert";
+import * as n64 from "n64";
 import ScriptError from "./scripterror";
 import { inspectSymbol } from "../utils";
 

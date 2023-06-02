@@ -15,7 +15,7 @@
     "declarationMap": false,
     "resolveJsonModule": true,
     "removeComments": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "moduleResolution": "Node",
     "module": "CommonJS",
   },

@@ -3,7 +3,7 @@
  * Copyright (c) 2017, Christopher Jeffrey (MIT License).
  * https://github.com/bcoin-org/bcoin
  */
-import assert from "bsert";
+import * as assert from "bsert";
 
 /**
  * Convert int to fixed number string and reduce by a

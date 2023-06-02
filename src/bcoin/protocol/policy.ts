@@ -9,7 +9,7 @@
  * @module protocol/policy
  */
 
-import assert from "bsert";
+import * as assert from "bsert";
 import consensus from "./consensus";
 
 const policy: any = {};

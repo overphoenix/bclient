@@ -9,8 +9,8 @@
  * @module protocol/consensus
  */
 
-import assert from "bsert";
-import BN from "bcrypto/lib/bn.js";
+import * as assert from "bsert";
+import * as BN from "bcrypto/lib/bn.js";
 
 const consensus: any = {};
 
@@ -324,7 +324,7 @@ consensus.verifyPOW = function verifyPOW(hash, bits) {
  * @returns {Amount}
  */
 
-consensus.getReward = function getReward(height, interval) {
+consensus.getReward = function getReward(height: number, interval: number) {
   assert(height >= 0, "Bad height for reward.");
 
   const halvings = Math.floor(height / interval);
@@ -350,7 +350,7 @@ consensus.getReward = function getReward(height, interval) {
  * @returns {Boolean}
  */
 
-consensus.hasBit = function hasBit(version, bit) {
+consensus.hasBit = function hasBit(version: number, bit: number) {
   const TOP_MASK = consensus.VERSION_TOP_MASK;
   const TOP_BITS = consensus.VERSION_TOP_BITS;
   const bits = (version & TOP_MASK) >>> 0;
