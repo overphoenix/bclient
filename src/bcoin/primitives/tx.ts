@@ -36,7 +36,7 @@ const { hashType } = Script;
  * @property {Number} locktime
  */
 
-class TX {
+export default class TX {
   /**
    * Create a transaction.
    * @constructor
@@ -2437,9 +2437,3 @@ class RawTX {
     this.witness = witness;
   }
 }
-
-/*
- * Expose
- */
-
-module.exports = TX;
