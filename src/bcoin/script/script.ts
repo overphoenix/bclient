@@ -109,7 +109,7 @@ export default class Script {
    */
 
   static fromOptions(options) {
-    return new this().fromOptions(options);
+    return new Script().fromOptions(options);
   }
 
   /**
@@ -176,7 +176,7 @@ export default class Script {
    */
 
   static fromArray(code) {
-    return new this().fromArray(code);
+    return new Script().fromArray(code);
   }
 
   /**
@@ -222,7 +222,7 @@ export default class Script {
    */
 
   static fromItems(items) {
-    return new this().fromItems(items);
+    return new Script().fromItems(items);
   }
 
   /**
@@ -252,7 +252,7 @@ export default class Script {
    */
 
   static fromStack(stack) {
-    return new this().fromStack(stack);
+    return new Script().fromStack(stack);
   }
 
   /**
@@ -261,7 +261,7 @@ export default class Script {
    */
 
   clone() {
-    return new this.constructor().inject(this);
+    return new Script().inject(this);
   }
 
   /**
@@ -417,7 +417,7 @@ export default class Script {
    */
 
   static fromJSON(json) {
-    return new this().fromJSON(json);
+    return new Script().fromJSON(json);
   }
 
   /**
@@ -1374,7 +1374,7 @@ export default class Script {
    */
 
   static fromPubkey(key) {
-    return new this().fromPubkey(key);
+    return new Script().fromPubkey(key);
   }
 
   /**
@@ -1413,7 +1413,7 @@ export default class Script {
    */
 
   static fromPubkeyhash(hash) {
-    return new this().fromPubkeyhash(hash);
+    return new Script().fromPubkeyhash(hash);
   }
 
   /**
@@ -1452,7 +1452,7 @@ export default class Script {
    */
 
   static fromMultisig(m, n, keys) {
-    return new this().fromMultisig(m, n, keys);
+    return new Script().fromMultisig(m, n, keys);
   }
 
   /**
@@ -1487,7 +1487,7 @@ export default class Script {
    */
 
   static fromScripthash(hash) {
-    return new this().fromScripthash(hash);
+    return new Script().fromScripthash(hash);
   }
 
   /**
@@ -1514,7 +1514,7 @@ export default class Script {
    */
 
   static fromNulldata(flags) {
-    return new this().fromNulldata(flags);
+    return new Script().fromNulldata(flags);
   }
 
   /**
@@ -1550,7 +1550,7 @@ export default class Script {
    */
 
   static fromProgram(version, data) {
-    return new this().fromProgram(version, data);
+    return new Script().fromProgram(version, data);
   }
 
   /**
@@ -1581,7 +1581,7 @@ export default class Script {
    */
 
   static fromAddress(address) {
-    return new this().fromAddress(address);
+    return new Script().fromAddress(address);
   }
 
   /**
@@ -1614,7 +1614,7 @@ export default class Script {
    */
 
   static fromCommitment(hash, flags) {
-    return new this().fromCommitment(hash, flags);
+    return new Script().fromCommitment(hash, flags);
   }
 
   /**
@@ -2929,7 +2929,7 @@ export default class Script {
    */
 
   static fromString(code) {
-    return new this().fromString(code);
+    return new Script().fromString(code);
   }
 
   /**
@@ -3137,7 +3137,7 @@ export default class Script {
    */
 
   static fromReader(br) {
-    return new this().fromReader(br);
+    return new Script().fromReader(br);
   }
 
   /**
@@ -3149,7 +3149,7 @@ export default class Script {
 
   static fromRaw(data, enc?: BufferEncoding) {
     if (typeof data === "string") data = Buffer.from(data, enc);
-    return new this().fromRaw(data);
+    return new Script().fromRaw(data);
   }
 
   /**

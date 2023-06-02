@@ -34,7 +34,7 @@ export default class ScriptNum extends I64 {
    * @param {(String|Number)?} base
    */
 
-  constructor(num, base) {
+  constructor(num = 0, base = 0) {
     super(num, base);
   }
 
@@ -230,7 +230,7 @@ export default class ScriptNum extends I64 {
    */
 
   static decode(data, minimal, limit) {
-    return new this().decode(data, minimal, limit);
+    return new ScriptNum().decode(data, minimal, limit);
   }
 
   /**

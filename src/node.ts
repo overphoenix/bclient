@@ -1,13 +1,13 @@
 import * as assert from "bsert";
 import * as bcurl from "bcurl";
-import { ClientOptions } from "./types";
+import { Options } from "./types";
 
 /**
  * Node Client
  * @extends {bcurl.Client}
  */
 export default class NodeClient extends bcurl.Client {
-  constructor(options?: ClientOptions) {
+  constructor(options: Options) {
     super(options);
   }
 

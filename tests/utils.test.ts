@@ -2,7 +2,7 @@
 import base58 from "bcrypto/lib/encoding/base58";
 // import { encoding } from 'bufio';
 import Amount from "../lib/bcoin/btc/amount";
-import { decode, encode, toFloat, fromFloat } from '../lib/bcoin/utils/fixed';
+import { decode, encode, toFloat, fromFloat } from "../lib/bcoin/utils/fixed";
 
 // const sha256 = require('bcrypto/lib/sha256');
 // const KeyRing = require('../lib/primitives/keyring');
@@ -47,43 +47,43 @@ describe("Utils", function () {
     expect(Amount.btc(5460 * 10000000)).toStrictEqual("546.0");
   });
 
-  it('should convert btc to satoshi', () => {
-    expect(Amount.value('0.0000546')).toStrictEqual(5460);
-    expect(Amount.value('546.78')).toStrictEqual(54678 * 1000000);
-    expect(Amount.value('546')).toStrictEqual(5460 * 10000000);
-    expect(Amount.value('546.0')).toStrictEqual(5460 * 10000000);
-    expect(Amount.value('546.0000')).toStrictEqual(5460 * 10000000);
+  it("should convert btc to satoshi", () => {
+    expect(Amount.value("0.0000546")).toStrictEqual(5460);
+    expect(Amount.value("546.78")).toStrictEqual(54678 * 1000000);
+    expect(Amount.value("546")).toStrictEqual(5460 * 10000000);
+    expect(Amount.value("546.0")).toStrictEqual(5460 * 10000000);
+    expect(Amount.value("546.0000")).toStrictEqual(5460 * 10000000);
 
     expect(() => {
-      Amount.value('546.00000000000000000');
+      Amount.value("546.00000000000000000");
     }).not.toThrow();
 
     expect(() => {
-      Amount.value('546.00000000000000001');
+      Amount.value("546.00000000000000001");
     }).toThrow();
 
     expect(() => {
-      Amount.value('90071992.54740991');
+      Amount.value("90071992.54740991");
     }).not.toThrow();
 
     expect(() => {
-      Amount.value('090071992.547409910');
+      Amount.value("090071992.547409910");
     }).not.toThrow();
 
     expect(() => {
-      Amount.value('90071992.54740992');
+      Amount.value("90071992.54740992");
     }).toThrow();
 
     expect(() => {
-      Amount.value('190071992.54740991');
+      Amount.value("190071992.54740991");
     }).toThrow();
 
     expect(0.15645647 * 1e8).toStrictEqual(15645646.999999998);
-    expect(parseFloat('0.15645647') * 1e8).toStrictEqual(15645646.999999998);
+    expect(parseFloat("0.15645647") * 1e8).toStrictEqual(15645646.999999998);
     expect(15645647 / 1e8).toStrictEqual(0.15645647);
 
-    expect(decode('0.15645647', 8)).toStrictEqual(15645647);
-    expect(encode(15645647, 8)).toStrictEqual('0.15645647');
+    expect(decode("0.15645647", 8)).toStrictEqual(15645647);
+    expect(encode(15645647, 8)).toStrictEqual("0.15645647");
     expect(fromFloat(0.15645647, 8)).toStrictEqual(15645647);
     expect(toFloat(15645647, 8)).toStrictEqual(0.15645647);
   });

@@ -72,7 +72,7 @@ export default class Input {
    */
 
   static fromOptions(options) {
-    return new this().fromOptions(options);
+    return new Input().fromOptions(options);
   }
 
   /**
@@ -81,7 +81,7 @@ export default class Input {
    */
 
   clone() {
-    const input = new this.constructor();
+    const input = new Input();
     input.prevout = this.prevout;
     input.script.inject(this.script);
     input.sequence = this.sequence;
@@ -337,7 +337,7 @@ export default class Input {
    */
 
   static fromJSON(json) {
-    return new this().fromJSON(json);
+    return new Input().fromJSON(json);
   }
 
   /**
@@ -400,7 +400,7 @@ export default class Input {
    */
 
   static fromReader(br) {
-    return new this().fromReader(br);
+    return new Input().fromReader(br);
   }
 
   /**
@@ -412,7 +412,7 @@ export default class Input {
 
   static fromRaw(data, enc) {
     if (typeof data === "string") data = Buffer.from(data, enc);
-    return new this().fromRaw(data);
+    return new Input().fromRaw(data);
   }
 
   /**
@@ -436,7 +436,7 @@ export default class Input {
    */
 
   static fromOutpoint(outpoint) {
-    return new this().fromOutpoint(outpoint);
+    return new Input().fromOutpoint(outpoint);
   }
 
   /**
@@ -460,7 +460,7 @@ export default class Input {
    */
 
   static fromCoin(coin) {
-    return new this().fromCoin(coin);
+    return new Input().fromCoin(coin);
   }
 
   /**
@@ -487,7 +487,7 @@ export default class Input {
    */
 
   static fromTX(tx, index) {
-    return new this().fromTX(tx, index);
+    return new Input().fromTX(tx, index);
   }
 
   /**

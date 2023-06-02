@@ -33,7 +33,7 @@ export default class Opcode {
    * @param {Buffer?} data - Pushdata buffer.
    */
 
-  constructor(value, data) {
+  constructor(value, data?: any) {
     this.value = value || 0;
     this.data = data || null;
   }
@@ -427,13 +427,14 @@ export default class Opcode {
 
     if (data.length === 0) return this.fromOp(opcodes.OP_0);
 
-    if (data.length <= 0x4b) return new this(data.length, data);
+    if (data.length <= 0x4b) return new Opcode(data.length, data);
 
-    if (data.length <= 0xff) return new this(opcodes.OP_PUSHDATA1, data);
+    if (data.length <= 0xff) return new Opcode(opcodes.OP_PUSHDATA1, data);
 
-    if (data.length <= 0xffff) return new this(opcodes.OP_PUSHDATA2, data);
+    if (data.length <= 0xffff) return new Opcode(opcodes.OP_PUSHDATA2, data);
 
-    if (data.length <= 0xffffffff) return new this(opcodes.OP_PUSHDATA4, data);
+    if (data.length <= 0xffffffff)
+      return new Opcode(opcodes.OP_PUSHDATA4, data);
 
     throw new Error("Pushdata size too large.");
   }
@@ -557,7 +558,7 @@ export default class Opcode {
 
         const data = br.readBytes(size);
 
-        return new this(value, data);
+        return new Opcode(value, data);
       }
       case opcodes.OP_PUSHDATA2: {
         if (br.left() < 2) {
@@ -574,7 +575,7 @@ export default class Opcode {
 
         const data = br.readBytes(size);
 
-        return new this(value, data);
+        return new Opcode(value, data);
       }
       case opcodes.OP_PUSHDATA4: {
         if (br.left() < 4) {
@@ -591,7 +592,7 @@ export default class Opcode {
 
         const data = br.readBytes(size);
 
-        return new this(value, data);
+        return new Opcode(value, data);
       }
       default: {
         if (br.left() < value) {
@@ -601,7 +602,7 @@ export default class Opcode {
 
         const data = br.readBytes(value);
 
-        return new this(value, data);
+        return new Opcode(value, data);
       }
     }
   }

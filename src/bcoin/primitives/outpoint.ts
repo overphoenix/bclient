@@ -60,7 +60,7 @@ export default class Outpoint {
    */
 
   static fromOptions(options) {
-    return new this().fromOptions(options);
+    return new Outpoint().fromOptions(options);
   }
 
   /**
@@ -69,7 +69,7 @@ export default class Outpoint {
    */
 
   clone() {
-    const outpoint = new this.constructor();
+    const outpoint = new Outpoint();
     outpoint.hash = this.hash;
     outpoint.index = this.index;
     return outpoint;
@@ -160,7 +160,7 @@ export default class Outpoint {
    */
 
   static fromKey(key) {
-    return new this().fromKey(key);
+    return new Outpoint().fromKey(key);
   }
 
   /**
@@ -221,7 +221,7 @@ export default class Outpoint {
    */
 
   static fromReader(br) {
-    return new this().fromReader(br);
+    return new Outpoint().fromReader(br);
   }
 
   /**
@@ -231,7 +231,7 @@ export default class Outpoint {
    */
 
   static fromRaw(data) {
-    return new this().fromRaw(data);
+    return new Outpoint().fromRaw(data);
   }
 
   /**
@@ -271,7 +271,7 @@ export default class Outpoint {
    */
 
   static fromJSON(json) {
-    return new this().fromJSON(json);
+    return new Outpoint().fromJSON(json);
   }
 
   /**
@@ -298,7 +298,7 @@ export default class Outpoint {
    */
 
   static fromTX(tx, index) {
-    return new this().fromTX(tx, index);
+    return new Outpoint().fromTX(tx, index);
   }
 
   /**

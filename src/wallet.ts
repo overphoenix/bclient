@@ -1,7 +1,7 @@
 import * as assert from "bsert";
 import * as bcurl from "bcurl";
 import { EventEmitter } from "node:events";
-import { ClientOptions } from "./types";
+import { Options } from "./types";
 
 /**
  * Wallet Client
@@ -14,7 +14,7 @@ export default class WalletClient extends bcurl.Client {
    * @param {Object?} options
    */
 
-  constructor(options: ClientOptions) {
+  constructor(options: Options) {
     super(options);
     this.wallets = new Map();
   }

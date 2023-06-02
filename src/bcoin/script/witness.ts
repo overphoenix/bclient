@@ -176,7 +176,7 @@ export default class Witness extends Stack {
    */
 
   clone() {
-    return new Witness.constructor().inject(this);
+    return new Witness().inject(this);
   }
 
   /**

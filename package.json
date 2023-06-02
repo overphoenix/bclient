@@ -1,6 +1,6 @@
 {
   "name": "@recalibratedsystems/bclient",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Bcoin node and wallet client",
   "license": "MIT",
   "repository": "git://github.com/overphoenix/bclient.git",
