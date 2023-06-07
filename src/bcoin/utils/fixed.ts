@@ -13,7 +13,7 @@ import * as assert from "bsert";
  * @returns {String} Fixed number string.
  */
 
-export const encode = function encode(num, exp) {
+export const encode = function encode(num: number, exp: number) {
   assert(Number.isSafeInteger(num), "Invalid integer value.");
 
   let sign = "";

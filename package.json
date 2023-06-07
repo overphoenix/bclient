@@ -1,6 +1,6 @@
 {
   "name": "@recalibratedsystems/bclient",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Bcoin node and wallet client",
   "license": "MIT",
   "repository": "git://github.com/overphoenix/bclient.git",
@@ -23,7 +23,7 @@
     "bsert": "git+https://github.com/chjj/bsert.git#semver:~0.0.10",
     "buffer-map": "git+https://github.com/chjj/buffer-map.git#semver:~0.0.7",
     "bufio": "git+https://github.com/bcoin-org/bufio.git#semver:~1.2.0",
-    "bcrypto": "git+https://github.com/bcoin-org/bcrypto.git#semver:~5.5.0",
+    "bcrypto": "git+https://github.com/bcoin-org/bcrypto.git#semver:~5.5.1",
     "n64": "git+https://github.com/chjj/n64.git#semver:~0.2.10"
   },
   "engines": {
@@ -33,9 +33,9 @@
     "@swc/jest": "^0.2.26",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.2.5",
-    "@typescript-eslint/eslint-plugin": "^5.59.8",
-    "@typescript-eslint/parser": "^5.59.8",
-    "eslint": "^8.41.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
+    "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.5.0",

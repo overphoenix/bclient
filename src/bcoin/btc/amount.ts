@@ -94,7 +94,7 @@ export default class Amount {
    * @returns {String|Amount}
    */
 
-  toBTC(num?: number) {
+  toBTC(num?: boolean) {
     return Amount.encode(this.value, 8, num);
   }
 
